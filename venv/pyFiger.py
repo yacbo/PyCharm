@@ -168,8 +168,8 @@ while (True):
      # frame = cv2.flip(frame, 1)  #视频流需要翻转,图片不用翻转
      kernelA = np.ones((3, 3), np.uint8)
      height, width = frame.shape[0:2]  # 高-宽
-     roi = frame[250:400, 210:390]    #高-宽区间
-     cv2.rectangle(frame, (210, 250), (390, 400), (0, 255, 255), 0)   #对角顶点
+     # roi = frame[250:400, 210:390]    #高-宽区间
+     # cv2.rectangle(frame, (210, 250), (390, 400), (0, 255, 255), 0)   #对角顶点
      # cv2.imshow("frame", frame)
      grdetect(frame,True)
      # 在播放每一帧时，使用cv2.waitKey()设置适当的持续时间。如果设置的太低视频就会播放的非常快，如果设置的太高就会播放的很慢。通常情况下25ms就ok
