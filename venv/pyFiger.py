@@ -13,6 +13,7 @@ import math
 import numpy as np
 import copy
 from enum import Enum
+import dlib
 
 class Event(Enum):
     NONE=0
@@ -42,7 +43,7 @@ def _bodyskin_detetc(frame):
 # 检测图像中的凸点(手指)个数
 def _get_contours(array):
     # 利用findContours检测图像中的轮廓, 其中返回值contours包含了图像中所有轮廓的坐标点
-    _, contours, _ = cv2.findContours(array, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    img, contours, _ = cv2.findContours(array, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     return contours
 
 def _get_eucledian_distance(start,end):
@@ -151,15 +152,11 @@ def grdetect(array, verbose=False):
     return event
 
 print("OpenCV Version:" + cv2.__version__);
-
 #cap = cv2.VideoCapture("rtsp://admin:abcd1234@192.168.1.64:554//Streaming/Channels/1")  # 打开指定路径上的视频文件
 #cap=cv2.VideoCapture(0) #打开设备索引号对于设备的摄像头，一般电脑的默认索引号为0
 # cap = cv2.VideoCapture("rtsp://admin:1234qwer@10.129.74.230:554/live")   #E:\PycharmProject\venv
 cap = cv2.VideoCapture("E://PycharmProject//PyCharm//venv//2.mp4")
 while (True):
-     index = 0;
-     if index%3!=0:
-          continue
      ret, frame = cap.read()
      if frame is None:
          continue
@@ -170,10 +167,10 @@ while (True):
      height, width = frame.shape[0:2]  # 高-宽
      # roi = frame[250:400, 210:390]    #高-宽区间
      # cv2.rectangle(frame, (210, 250), (390, 400), (0, 255, 255), 0)   #对角顶点
-     # cv2.imshow("frame", frame)
+     cv2.imshow("frame1", frame)
      grdetect(frame,True)
-     # 在播放每一帧时，使用cv2.waitKey()设置适当的持续时间。如果设置的太低视频就会播放的非常快，如果设置的太高就会播放的很慢。通常情况下25ms就ok
-     k = cv2.waitKey(1) & 0xFF
+     #在播放每一帧时，使用cv2.waitKey()设置适当的持续时间。如果设置的太低视频就会播放的非常快，如果设置的太高就会播放的很慢。通常情况下25ms就ok
+     k = cv2.waitKey(25) & 0xFF
      if k==27:
          break
 cap.release()
