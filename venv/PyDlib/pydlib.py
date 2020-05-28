@@ -18,7 +18,7 @@ def discern(img):
 
 #cap = cv2.VideoCapture("rtsp://admin:1234qwer@10.129.74.230:554/live")
 #cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture("2.flv")
+cap = cv2.VideoCapture("../Video/2.flv")
 while (1):
     ret, img = cap.read()
     if img is None:

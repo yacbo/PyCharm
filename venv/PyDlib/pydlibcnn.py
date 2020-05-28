@@ -5,10 +5,10 @@ from sklearn import *
 import dlib
 import time
 
-predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
-face_rec_model = dlib.face_recognition_model_v1("dlib_face_recognition_resnet_model_v1.dat")
-
+predictor = dlib.shape_predictor("../shape_predictor_68_face_landmarks.dat")
+face_rec_model = dlib.face_recognition_model_v1("../dlib_face_recognition_resnet_model_v1.dat")
 detector = dlib.get_frontal_face_detector()
+
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
@@ -60,27 +60,29 @@ def predictImg(img, clf):
 
 
 # 加载训练集
-Xtrain, Ytrain = loadVIP("F:\\test\\vip\\vip.txt")
+Xtrain, Ytrain = loadVIP("faceData.txt")
 loadtime1 = time.time()
 clf = neighbors.KNeighborsClassifier(algorithm="ball_tree", metric='euclidean', n_neighbors=1)
 clf.fit(Xtrain, Ytrain)
 loadtime2 = time.time()
 print("建模时间为：", loadtime2 - loadtime1)
 
-cap = cv2.VideoCapture(0)  # 打开1号摄像头
+#cap = cv2.VideoCapture(0)  # 打开1号摄像头
+
+
+cap = cv2.VideoCapture("../Video/2.flv")
 success, frame = cap.read()
 while success:
     success, frame = cap.read()  # 读取一桢图像，这个图像用来获取它的大小
-    # cv2.imshow("test", frame)  # 显示图像
-
+    cv2.imshow("test", frame)  # 显示图像
     t1 = time.time()
     img = predictImg(frame, clf)
     t2 = time.time()
     print('总时间：', t2 - t1)
     cv2.imshow("test", img)  # 显示图像
     key = cv2.waitKey(1)
-    key = cv2.waitKey(1)
     c = chr(key & 255)
     if c in ['q', 'Q', chr(27)]:
         break
+
 cv2.destroyAllWindows
