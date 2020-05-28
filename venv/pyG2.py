@@ -3,6 +3,7 @@ import cv2
 import math
 import numpy as np
 import copy
+import dlib
 from enum import Enum
 
 class Event(Enum):
@@ -104,24 +105,27 @@ def grdetect(array, verbose=False):
     cv2.imshow('frame', frame)
     return event
 
+#多边形逼近
+def approxPloy(img):
+    # 1.先找到轮廓
+    ycrcb = cv2.cvtColor(img,cv2.COLOR_BGR2YCrCb) #分解为YUV图像，得到CR分量
+    (_,cr,_) = cv2.split(ycrcb)  #拆分颜色通道,顺序是b,g,r
+    cr1 = cv2.GaussianBlur(cr,(5,5),0) #(5,5)表示高斯矩阵的长与宽都是5，标准差取0
+    _,thresh = cv2.threshold(cr1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    image, contours, hierarchy = cv2.findContours(thresh, 3, 2)
+    cnt = contours[0]
+    # 2.进行多边形逼近，得到多边形的角点
+    approx = cv2.approxPolyDP(cnt, 3, True)
+    # 3.画出多边形
+    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+    cv2.polylines(image, [approx], True, (0, 255, 0), 2)
+    cv2.polylines(image,[cnt],True,(0,0,255),2)
+    cv2.imshow("image",image)
+
 #打印版本
 print("OpenCV Version:" + cv2.__version__)
 # 读取图片
 img = cv2.imread('f1.png', 1)
-#grdetect(img,True)
-# 1.先找到轮廓
-ycrcb = cv2.cvtColor(img,cv2.COLOR_BGR2YCrCb) #分解为YUV图像，得到CR分量
-(_,cr,_) = cv2.split(ycrcb)  #拆分颜色通道,顺序是b,g,r
-cr1 = cv2.GaussianBlur(cr,(5,5),0) #(5,5)表示高斯矩阵的长与宽都是5，标准差取0
-_,thresh = cv2.threshold(cr1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-image, contours, hierarchy = cv2.findContours(thresh, 3, 2)
-cnt = contours[0]
-# 2.进行多边形逼近，得到多边形的角点
-approx = cv2.approxPolyDP(cnt, 3, True)
-# 3.画出多边形
-image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-cv2.polylines(image, [approx], True, (0, 255, 0), 2)
-cv2.polylines(image,[cnt],True,(0,0,255),2)
-cv2.imshow("image",image)
+grdetect(img,True)
 
 cv2.waitKey()
