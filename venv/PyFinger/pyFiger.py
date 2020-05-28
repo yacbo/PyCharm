@@ -155,7 +155,7 @@ print("OpenCV Version:" + cv2.__version__);
 #cap = cv2.VideoCapture("rtsp://admin:abcd1234@192.168.1.64:554//Streaming/Channels/1")  # 打开指定路径上的视频文件
 #cap=cv2.VideoCapture(0) #打开设备索引号对于设备的摄像头，一般电脑的默认索引号为0
 # cap = cv2.VideoCapture("rtsp://admin:1234qwer@10.129.74.230:554/live")   #E:\PycharmProject\venv
-cap = cv2.VideoCapture("E://PycharmProject//PyCharm//venv//2.mp4")
+cap = cv2.VideoCapture("Video/2.mp4")
 while (True):
      ret, frame = cap.read()
      if frame is None:

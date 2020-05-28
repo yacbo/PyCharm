@@ -8,7 +8,7 @@ print("OpenCV Version:" + cv2.__version__);
 使用函数 cv2.imread() 读入图像。这幅图像应该在此程序的工作路径，或者给函数提供完整路径.
 警告：就算图像的路径是错的，OpenCV 也不会提醒你的，但是当你使用命令print(img)时得到的结果是None。
 '''
-img = cv2.imread("./0.jpg", cv2.IMREAD_COLOR)
+img = cv2.imread("Picture/0.jpg", cv2.IMREAD_COLOR)
 '''
 imread函数的第一个参数是要打开的图像的名称(带路径)
 第二个参数是告诉函数应该如何读取这幅图片. 其中
@@ -33,7 +33,7 @@ cv2.destroyAllWindows() # 销毁所有cv创建的窗口
 保存的图片的格式由后缀名决定.
 '''
 #cv2.imwrite(imname + "01.png", img)
-cv2.imwrite("01.jpg", img)
+cv2.imwrite("Picture/01.jpg", img)
 
 """读取视频并检测人像"""
 cap = cv2.VideoCapture("rtsp://admin:1234qwer@10.129.74.230:554/live")
@@ -53,6 +53,7 @@ while True:
         _, skin = cv2.threshold(cr1, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)  # OTSU图像二值化
 
     img, contours, hierarchy = cv2.findContours(skin, cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
     for i, contour in enumerate(contours): # 获取轮廓
         cv2.drawContours(img[0:350, 380:700], contours, i, (255, 0, 0), 1) # 绘制轮廓
         x, y, w, h = cv2.boundingRect(contour)

@@ -7,18 +7,30 @@ import dlib
 import matplotlib.pyplot as plt
 from enum import Enum
 
+
+def discern(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    dets = detector(gray, 1)
+    for face in dets:
+        left = face.left()
+        top = face.top()
+        right = face.right()
+        bottom = face.bottom()
+        cv2.rectangle(img, (left, top), (right, bottom), (0, 0, 255), 1)
+    cv2.imshow("image", img)
+
 #打印版本
 print("OpenCV Version:" + cv2.__version__)
 # 读取图片
-img = cv2.imread('f1.png', 1)
-predictor_path = 'shape_predictor_68_face_landmarks.dat'
-test_img = 'aa.png'
-img = cv2.imread(test_img)
+img = cv2.imread('../Picture/f1.png', 1)
+predictor_path = '../shape_predictor_68_face_landmarks.dat'
+
+img = cv2.imread('../Picture/aa.png')
 imgcp = copy.deepcopy(img)
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)
 
-faces = detector(img, 0)
+faces = detector(img, 1)   #检测到的人像,参数1表示扩大一倍再检测，可以检测更多人像
 if len(faces):
     print('==> Found %d face in this image.' % len(faces))
     for i in range(len(faces)):

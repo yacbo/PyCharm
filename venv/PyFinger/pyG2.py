@@ -56,18 +56,10 @@ def _get_defects_count(array, contour, defects, verbose=False):
         if angle <= math.pi / 2:  # 90:
             ndefects = ndefects + 1
             if verbose:
-                cv2.circle(array, far, 3, (0,0,255), -1)
+                cv2.circle(array, far, 3, (0,0,255), -1)   #-1表示实心圆 3表示半径
         if verbose:
             cv2.line(array, beg, end, (0,0,255), 1)
     return array, ndefects
-
-#显示手势
-def _show_figer_num(ndefects,img):
-    frame = copy.deepcopy(img)
-    figernum = ndefects + 1
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame, str(figernum), (0, 50), font, 2, (0, 0, 255), 3, cv2.LINE_AA)
-    return figernum,frame
 
 #方法1检测手势
 def grdetect(array, verbose=False):
@@ -125,7 +117,7 @@ def approxPloy(img):
 #打印版本
 print("OpenCV Version:" + cv2.__version__)
 # 读取图片
-img = cv2.imread('f1.png', 1)
+img = cv2.imread('Picture/f1.png', 1)
 grdetect(img,True)
 
 cv2.waitKey()
